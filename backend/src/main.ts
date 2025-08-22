@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule,{
     cors: {
-      origin: 'https://erpfullstack-git-main-isopodearths-projects.vercel.app/',
+      origin: "https://erpfrontend-iugu.onrender.com", 
       credentials: true,
     },
   });
