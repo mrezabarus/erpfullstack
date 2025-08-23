@@ -20,7 +20,7 @@ export class AuthController {
         secure: true, // wajib true kalau sudah HTTPS (Render)
         sameSite: 'none', // biar bisa cross-site cookie
         path: '/',
-        domain: 'erpfrontend-iugu.onrender.com', // ⬅️ penting!
+        domain: 'erpfrontend-fawn.vercel.app/', // ⬅️ penting!
         maxAge: 1000 * 60 * 60, // 1 jam
       });
     
