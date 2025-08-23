@@ -6,18 +6,15 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ✅ Whitelist origin
+  app.set('trust proxy', 1); // ⚡ wajib kalau deploy di Render
+
   const allowedOrigins = [
-    'http://localhost:3000',                 // local dev
-    'https://erpfrontend-fawn.vercel.app',   // frontend Vercel
+    'http://localhost:3000',
+    'https://erpfrontend-fawn.vercel.app',
   ];
-  
+
   app.enableCors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        'http://localhost:3000',
-        'https://erpfrontend-fawn.vercel.app',
-      ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
