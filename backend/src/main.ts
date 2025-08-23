@@ -11,9 +11,19 @@ async function bootstrap() {
     'http://localhost:3000',                 // local dev
     'https://erpfrontend-fawn.vercel.app',   // frontend Vercel
   ];
-
+  
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'https://erpfrontend-fawn.vercel.app',
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   });
 
