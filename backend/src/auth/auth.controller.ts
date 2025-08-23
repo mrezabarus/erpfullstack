@@ -21,8 +21,7 @@ export class AuthController {
             maxAge: 1000 * 60 * 60,
             sameSite: 'none',
             path: '/',
-        // ❌ jangan pakai '.onrender.com'
-        // domain: 'erpfullstack.onrender.com'  // boleh, tapi optional
+            domain: 'erpfrontend-iugu.onrender.com'
         });
 
         // Pastikan mengembalikan token juga di response body
