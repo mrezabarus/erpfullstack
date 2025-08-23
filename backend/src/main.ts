@@ -2,10 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create(AppModule);
 
   // ✅ Whitelist origin
   const allowedOrigins = [
@@ -17,9 +16,6 @@ async function bootstrap() {
     origin: allowedOrigins,
     credentials: true,
   });
-
-  // ✅ Fix untuk Render (proxy)
-  app.set('trust proxy', 1); // sekarang valid karena pakai NestExpressApplication
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
