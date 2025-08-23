@@ -2,27 +2,24 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.set('trust proxy', 1); // ⚡ wajib kalau deploy di Render
-
+  // ✅ Whitelist origin
   const allowedOrigins = [
     'http://localhost:3000',
     'https://erpfrontend-fawn.vercel.app',
   ];
 
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   });
+
+  // ✅ Fix untuk Render (proxy)
+  app.set('trust proxy', 1); // sekarang valid karena pakai NestExpressApplication
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
