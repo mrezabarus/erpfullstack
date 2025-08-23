@@ -16,13 +16,12 @@ export class AuthController {
     
       // Cookie diset untuk domain FRONTEND
       res.cookie('access_token', data.access_token, {
-        httpOnly: true,
-        secure: true, // wajib true kalau sudah HTTPS (Render)
-        sameSite: 'none', // biar bisa cross-site cookie
-        path: '/',
-        domain: 'erpfrontend-fawn.vercel.app/', // ⬅️ penting!
-        maxAge: 1000 * 60 * 60, // 1 jam
-      });
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production', // true hanya kalau HTTPS
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
+          path: '/',
+          maxAge: 1000 * 60 * 60, // 1 jam
+        });
     
       // Juga kembalikan di body supaya Postman & client API bisa baca
       return {
@@ -43,10 +42,10 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     logout(@Res({ passthrough: true }) res: Response){
         res.clearCookie('access_token', {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
-            path: '/',
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          path: '/',
         });
 
         return { message: 'Logout success' };
