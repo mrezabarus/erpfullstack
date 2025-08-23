@@ -17,9 +17,9 @@ export class AuthController {
         // Perbaikan cookie settings untuk production
         res.cookie('access_token', data.access_token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // true di production (Render = https)
+            secure: true, // true di production (Render = https)
             maxAge: 1000 * 60 * 60,
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            sameSite: 'none',
             path: '/',
         // ❌ jangan pakai '.onrender.com'
         // domain: 'erpfullstack.onrender.com'  // boleh, tapi optional
