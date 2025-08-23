@@ -8,27 +8,27 @@ export class AuthController {
 
     @Post('login')
     async login(
-        @Res({ passthrough: true }) res: Response,
-        @Body('email') email: string,
-        @Body('password') password: string,
+      @Res({ passthrough: true }) res: Response,
+      @Body('email') email: string,
+      @Body('password') password: string,
     ) {
-        const data = await this.authService.login(email, password);
-        
-        // Perbaikan cookie settings untuk production
-        res.cookie('access_token', data.access_token, {
-            httpOnly: true,
-            secure: true, // true di production (Render = https)
-            maxAge: 1000 * 60 * 60,
-            sameSite: 'none',
-            path: '/',
-            domain: 'erpfrontend-iugu.onrender.com'
-        });
-
-        // Pastikan mengembalikan token juga di response body
-        return { 
-            user: data.user,
-            access_token: data.access_token // Tambahkan ini untuk Postman/API clients
-        };
+      const data = await this.authService.login(email, password);
+    
+      // Cookie diset untuk domain FRONTEND
+      res.cookie('access_token', data.access_token, {
+        httpOnly: true,
+        secure: true, // wajib true kalau sudah HTTPS (Render)
+        sameSite: 'none', // biar bisa cross-site cookie
+        path: '/',
+        domain: 'erpfrontend-iugu.onrender.com', // ⬅️ penting!
+        maxAge: 1000 * 60 * 60, // 1 jam
+      });
+    
+      // Juga kembalikan di body supaya Postman & client API bisa baca
+      return {
+        user: data.user,
+        access_token: data.access_token,
+      };
     }
 
     @Get('me')
