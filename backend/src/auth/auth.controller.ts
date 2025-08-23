@@ -14,11 +14,10 @@ export class AuthController {
     ) {
       const data = await this.authService.login(email, password);
     
-      // Cookie diset untuk domain FRONTEND
-      res.cookie('access_token', data.access_token, {
+     res.cookie('access_token', data.access_token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production', // true hanya kalau HTTPS
-          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
+          secure: process.env.NODE_ENV === 'production', 
+          sameSite: 'none',   // ❌ jangan conditional, harus 'none' biar cross-domain
           path: '/',
           maxAge: 1000 * 60 * 60, // 1 jam
         });
